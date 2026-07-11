@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>برنامه پاس نگهبانی ۱۴ روزه</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header class="hero">
+
+            <div>
+                <h1>
+                    برنامه پاس نگهبانی ۷ روزه
+                </h1>
+
+                <p>
+                    مدیریت هوشمند پاس‌ها بر اساس ضریب خدمت پرسنل
+                </p>
+            </div>
+
+        </header>
+
+
+        <!-- جدول افراد -->
+        <!-- راهنمای ضریب -->
+
+        <section class="card guide-card">
+
+            <h2>
+                راهنمای ضریب نگهبانی
+            </h2>
+
+
+            <div class="guide-container">
+
+
+                <div class="guide-item low">
+
+                    <strong>0.5</strong>
+
+                    <span>
+                        بسیار کم
+                    </span>
+
+                    <p>
+                        تعداد پاس بسیار کمتر
+                        نسبت به سایر افراد
+                    </p>
+
+                </div>
+
+
+
+
+
+                <div class="guide-item normal">
+
+                    <strong>1</strong>
+
+                    <span>
+                        عادی
+                    </span>
+
+                    <p>
+                        تعداد پاس استاندارد
+                    </p>
+
+                </div>
+
+
+
+
+
+                <div class="guide-item high">
+
+                    <strong>1.5</strong>
+
+                    <span>
+                        زیاد
+                    </span>
+
+                    <p>
+                        تعداد پاس بیشتر
+                    </p>
+
+                </div>
+
+
+
+                <div class="guide-item max">
+
+                    <strong>2</strong>
+
+                    <span>
+                        حداکثر
+                    </span>
+
+                    <p>
+                        بیشترین سهم پاس
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="guide-note">
+
+                <b>نکته:</b>
+
+                هرچه ضریب کمتر باشد،
+                فرد پاس کمتری دریافت می‌کند.
+                ضریب بالاتر باعث افزایش سهم پاس می‌شود.
+
+            </div>
+
+
+        </section>
+        <section class="card">
+
+            <h2>امتیاز پرسنل</h2>
+            <div class="person-tools">
+
+                <input type="text" id="newPersonName" placeholder="نام پرسنل">
+
+                <button id="addPersonBtn" type="button">
+
+                    افزودن پرسنل
+
+                </button>
+
+            </div>
+            <table class="score-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>ردیف</th>
+
+                        <th>نام</th>
+
+                        <th>امتیاز</th>
+
+                        <th>عملیات</th>
+
+                        <th>وضعیت</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="personTable">
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- دکمه ها -->
+
+        <section class="actions">
+
+            <button id="generateBtn" type="button">
+                ایجاد برنامه
+            </button>
+
+            <button id="pdfBtn" type="button">
+                دانلود PDF
+            </button>
+
+        </section>
+
+
+        <!-- برنامه -->
+
+        <section class="card">
+
+            <h2>برنامه نگهبانی</h2>
+
+            <div id="scheduleContainer"></div>
+
+        </section>
+        <section class="card">
+            <div class="fairness-box">
+
+                <h2>گزارش عدالت برنامه</h2>
+                <button  id="fairnessPdfBtn"  onclick="downloadFairnessPDF()">
+                    📄 دانلود PDF
+                </button>
+
+                <div id="fairnessContainer"></div>
+
+            </div>
+        </section>
+        <!-- آمار -->
+        <!-- 
+        <section class="card">
+
+            <h2>آمار</h2>
+
+            <div id="statsContainer"></div>
+
+        </section> -->
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script src="scheduler.js"></script>
+
+    <script src="pdf.js"></script>
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>
