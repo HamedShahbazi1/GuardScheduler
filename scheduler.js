@@ -1,7 +1,7 @@
 /*=====================================
       دریافت افراد فعال
 =====================================*/
-
+window.currentProgramDate = null;
 function getActivePersons(listName) {
 
     return lists[listName].filter(function (person) {
@@ -320,6 +320,44 @@ function createDaySchedule(day) {
 
 }
 
+function addToReport(person, role, day) {
+
+    if (!person) {
+
+        return;
+
+    }
+
+    const id = person.originalPerson
+        ? person.originalPerson.id
+        : person.id;
+
+    const name = person.originalPerson
+        ? person.originalPerson.name
+        : person.name;
+
+    if (!scheduleReport[id]) {
+
+        scheduleReport[id] = {
+
+            name: name,
+
+            role: role,
+
+            count: 0,
+
+            days: []
+
+        };
+
+    }
+
+    scheduleReport[id].count++;
+
+    scheduleReport[id].days.push(day);
+
+}
+
 /*=====================================
       ساخت برنامه ماهانه
 =====================================*/
@@ -327,7 +365,7 @@ function createDaySchedule(day) {
 let monthlySchedule = [];
 
 let assignedHistory = {};
-
+let scheduleReport = {};
 
 function generateSchedule() {
 
@@ -349,6 +387,8 @@ function generateSchedule() {
     monthlySchedule = [];
 
     assignedHistory = {};
+
+    scheduleReport = {};
 
 
 
@@ -393,7 +433,11 @@ function generateSchedule() {
 
 
         monthlySchedule.push(schedule);
+        addToReport(schedule.chief, "افسر", day);
 
+        addToReport(schedule.guard, "نگهبان", day);
+
+        addToReport(schedule.night, "شبکار", day);
 
     }
 
@@ -403,6 +447,7 @@ function generateSchedule() {
 
     renderSchedule();
 
+    renderReport();
 
     showToast(
         "برنامه 31 روزه ایجاد شد",
@@ -496,19 +541,36 @@ function renderSchedule() {
                 <span>افسر</span>
 
                 </strong>
-              ${day.chief ? `
-<div class="person-name">
-    ${day.chief.name}
-</div>
+         ${day.chief ? `
 
 ${day.chief.originalPerson ? `
-<div class="replacement-info">
 
-    جایگزین
-    <strong>${day.chief.originalPerson.name}</strong>
+<div class="original-person">
+
+    <del>${day.chief.originalPerson.name}</del>
 
 </div>
-` : ""}
+
+<div class="replacement-label">
+
+    🔄 نیروی جایگزین :
+
+</div>
+<div class="replacement-person">
+
+    ✅ ${day.chief.name}
+
+</div>
+
+` : `
+
+<div class="person-name">
+
+    ${day.chief.name}
+
+</div>
+
+`}
 
 ` : "---"}
 
@@ -523,19 +585,36 @@ ${day.chief.originalPerson ? `
                 <span>نگهبان</span>
 
                 </strong>
-         ${day.guard ? `
-<div class="person-name">
-    ${day.guard.name}
-</div>
+    ${day.guard ? `
 
 ${day.guard.originalPerson ? `
-<div class="replacement-info">
 
-    جایگزین
-    <strong>${day.guard.originalPerson.name}</strong>
+<div class="original-person">
+
+    <del>${day.guard.originalPerson.name}</del>
 
 </div>
-` : ""}
+
+<div class="replacement-label">
+
+    🔄 نیروی جایگزین :
+
+</div>
+<div class="replacement-person">
+
+    ✅ ${day.guard.name}
+
+</div>
+
+` : `
+
+<div class="person-name">
+
+    ${day.guard.name}
+
+</div>
+
+`}
 
 ` : "---"}
 
@@ -548,19 +627,36 @@ ${day.guard.originalPerson ? `
                 <span>شبکار</span>
  </strong>
               
-              ${day.night ? `
-<div class="person-name">
-    ${day.night.name}
-</div>
+        ${day.night ? `
 
 ${day.night.originalPerson ? `
-<div class="replacement-info">
 
-    جایگزین
-    <strong>${day.night.originalPerson.name}</strong>
+<div class="original-person">
+
+    <del>${day.night.originalPerson.name}</del>
 
 </div>
-` : ""}
+
+<div class="replacement-label">
+
+    🔄 نیروی جایگزین :
+
+</div>
+<div class="replacement-person">
+
+    ✅ ${day.night.name}
+
+</div>
+
+` : `
+
+<div class="person-name">
+
+    ${day.night.name}
+
+</div>
+
+`}
 
 ` : "---"}
                
@@ -585,3 +681,106 @@ generateBtn.addEventListener(
     "click",
     generateSchedule
 );
+
+function getWeekDay(day) {
+
+    const weekDays = [
+
+        "شنبه",
+        "یکشنبه",
+        "دوشنبه",
+        "سه‌شنبه",
+        "چهارشنبه",
+        "پنجشنبه",
+        "جمعه"
+
+    ];
+
+    return weekDays[(day - 1) % 7];
+
+}
+function renderReport() {
+
+    fairnessContainer.innerHTML = "";
+
+    const table = document.createElement("table");
+
+    table.className = "score-table";
+
+    table.innerHTML = `
+
+<thead>
+
+<tr>
+
+<th>نام</th>
+
+<th>سمت</th>
+
+<th>تعداد پاس</th>
+
+<th>روزهای پاس</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+</tbody>
+
+`;
+
+    const tbody = table.querySelector("tbody");
+
+    Object.values(scheduleReport).forEach(function (item) {
+
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+
+        <td>${item.name}</td>
+
+        <td>${item.role}</td>
+
+        <td>${item.count}</td>
+
+   <td>
+
+${item.days.map(function(day){
+
+   return `
+
+<div class="pass-day">
+
+    <span class="pass-day-number">
+
+        روز ${day}
+
+    </span>
+
+    <span class="pass-day-week">
+
+        ${getWeekDayByProgramDay(day)}
+
+    </span>
+
+ 
+
+</div>
+
+`;
+
+}).join("<br>")}
+
+</td>
+
+        `;
+
+        tbody.appendChild(tr);
+
+    });
+
+    fairnessContainer.appendChild(table);
+
+}

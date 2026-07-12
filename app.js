@@ -1,6 +1,7 @@
 /*=====================================
         تنظیمات برنامه
 =====================================*/
+window.currentProgramDate = null;
 window.TOTAL_DAYS = 31;
 
 window.PASSES_PER_DAY = 3;
@@ -369,6 +370,10 @@ function hideModal() {
 
     modalInput.value = "";
 
+    modalInput.style.display = "none";
+
+    modalSelect.style.display = "none";
+
 }
 function showConfirmModal(title, message, onConfirm) {
 
@@ -380,6 +385,9 @@ function showConfirmModal(title, message, onConfirm) {
 
     modalOverlay.style.display = "flex";
 
+    modalInput.style.display = "none";
+
+modalSelect.style.display = "none";
     modalConfirmBtn.onclick = function () {
 
         hideModal();
@@ -584,7 +592,7 @@ function deleteReservePerson(id) {
 
             reservePersons.splice(index, 1);
 
-            saveList("chief");
+            saveList("reserve");
 
             renderReservePersons();
 
@@ -966,7 +974,11 @@ function renderReservePersons() {
             class="edit-reserve-btn"
             data-id="${person.id}">
 
-            ویرایش
+            
+
+✏️
+
+
 
             </button>
 
@@ -974,7 +986,11 @@ function renderReservePersons() {
             class="delete-reserve-btn"
             data-id="${person.id}">
 
-            حذف
+            
+
+🗑️
+
+
 
             </button>
 
@@ -998,6 +1014,8 @@ function renderReservePersons() {
 function showCurrentDate() {
 
     const now = new Date();
+
+    window.currentProgramDate = new Date(now);
 
     const dateFormatter = new Intl.DateTimeFormat(
         "fa-IR",
@@ -1025,7 +1043,47 @@ function showCurrentDate() {
     `;
 
 }
+function getWeekDayByProgramDay(day){
 
+    const date = new Date(window.currentProgramDate);
+
+    date.setDate(
+        date.getDate() + (day - 1)
+    );
+
+    const weekDays = [
+
+        "یکشنبه",
+        "دوشنبه",
+        "سه‌شنبه",
+        "چهارشنبه",
+        "پنجشنبه",
+        "جمعه",
+        "شنبه"
+
+    ];
+
+    return weekDays[date.getDay()];
+
+}
+function getShamsiDateByProgramDay(day){
+
+    const date = new Date(window.currentProgramDate);
+
+    date.setDate(
+        date.getDate() + (day - 1)
+    );
+
+    return new Intl.DateTimeFormat(
+        "fa-IR",
+        {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+        }
+    ).format(date);
+
+}
 /*=====================================
           رویدادها
 =====================================*/
