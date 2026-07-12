@@ -101,10 +101,10 @@ const addPersonBtn = document.getElementById("addPersonBtn");
 const generateBtn = document.getElementById("generateBtn");
 const pdfBtn = document.getElementById("pdfBtn");
 const exportBtn =
-    document.getElementById("exportBtn");
+    document.getElementById("exportDataBtn");
 
 const importBtn =
-    document.getElementById("importBtn");
+    document.getElementById("importDataBtn");
 
 const importFile =
     document.getElementById("importFile");
@@ -1025,60 +1025,7 @@ function showCurrentDate() {
     `;
 
 }
-/*=====================================
-        Export Backup
-=====================================*/
 
-function exportData() {
-
-    const backup = {
-
-        chief: lists.chief,
-
-        guard: lists.guard,
-
-        night: lists.night,
-
-        reserve: lists.reserve
-
-    };
-
-    const json =
-        JSON.stringify(
-            backup,
-            null,
-            2
-        );
-
-    const blob =
-        new Blob(
-            [json],
-            {
-                type:"application/json"
-            }
-        );
-
-    const url =
-        URL.createObjectURL(blob);
-
-    const link =
-        document.createElement("a");
-
-    link.href = url;
-
-    link.download =
-        "guard-scheduler-backup.json";
-
-    link.click();
-
-    URL.revokeObjectURL(url);
-
-    showToast(
-        "فایل پشتیبان دانلود شد.",
-        "success"
-    );
-
-}
 /*=====================================
           رویدادها
 =====================================*/
@@ -1135,7 +1082,7 @@ newPersonNameInput.addEventListener("keydown", function (event) {
 
     if (event.key === "Enter") {
 
-        addPerson();
+      addChiefPerson();
 
     }
 
@@ -1291,10 +1238,3 @@ showCurrentDate();
 
 setInterval(showCurrentDate, 1000);
 
-exportBtn.addEventListener(
-
-    "click",
-
-    exportData
-
-);
