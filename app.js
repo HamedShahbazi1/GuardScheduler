@@ -100,6 +100,14 @@ const newPersonNameInput = document.getElementById("newPersonName");
 const addPersonBtn = document.getElementById("addPersonBtn");
 const generateBtn = document.getElementById("generateBtn");
 const pdfBtn = document.getElementById("pdfBtn");
+const exportBtn =
+    document.getElementById("exportBtn");
+
+const importBtn =
+    document.getElementById("importBtn");
+
+const importFile =
+    document.getElementById("importFile");
 const scheduleContainer = document.getElementById("scheduleContainer");
 const fairnessContainer = document.getElementById("fairnessContainer");
 const reserveTable =
@@ -1017,7 +1025,60 @@ function showCurrentDate() {
     `;
 
 }
+/*=====================================
+        Export Backup
+=====================================*/
 
+function exportData() {
+
+    const backup = {
+
+        chief: lists.chief,
+
+        guard: lists.guard,
+
+        night: lists.night,
+
+        reserve: lists.reserve
+
+    };
+
+    const json =
+        JSON.stringify(
+            backup,
+            null,
+            2
+        );
+
+    const blob =
+        new Blob(
+            [json],
+            {
+                type:"application/json"
+            }
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const link =
+        document.createElement("a");
+
+    link.href = url;
+
+    link.download =
+        "guard-scheduler-backup.json";
+
+    link.click();
+
+    URL.revokeObjectURL(url);
+
+    showToast(
+        "فایل پشتیبان دانلود شد.",
+        "success"
+    );
+
+}
 /*=====================================
           رویدادها
 =====================================*/
@@ -1230,3 +1291,10 @@ showCurrentDate();
 
 setInterval(showCurrentDate, 1000);
 
+exportBtn.addEventListener(
+
+    "click",
+
+    exportData
+
+);

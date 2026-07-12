@@ -2020,3 +2020,33 @@ border-right:5px solid #f59e0b;
     font-size:14px;
 
 }
+
+/*====================================
+      Import / Export Buttons
+====================================*/
+
+#exportDataBtn,
+#importDataBtn{
+
+    background:#ffffff;
+
+    color:#334155;
+
+    border:2px solid #d1d5db;
+
+    box-shadow:0 8px 18px rgba(0,0,0,.08);
+
+    font-weight:bold;
+
+}
+
+#exportDataBtn:hover,
+#importDataBtn:hover{
+
+    background:#f8fafc;
+
+    border-color:#3b82f6;
+
+    color:#2563eb;
+
+}
