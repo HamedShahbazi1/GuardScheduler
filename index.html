@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>برنامه پاس نگهبانی ۱۴ روزه</title>
+    <title>برنامه پاس نگهبانی 31 روزه</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -17,116 +17,29 @@
 
             <div>
                 <h1>
-                    برنامه پاس نگهبانی ۷ روزه
+                    برنامه پاس نگهبانی 31 روزه
                 </h1>
 
                 <p>
                     مدیریت هوشمند پاس‌ها بر اساس ضریب خدمت پرسنل
                 </p>
             </div>
+            <div class="date-box">
 
+
+
+                <strong id="startDate"></strong>
+
+            </div>
         </header>
 
 
         <!-- جدول افراد -->
         <!-- راهنمای ضریب -->
 
-        <section class="card guide-card">
-
-            <h2>
-                راهنمای ضریب نگهبانی
-            </h2>
-
-
-            <div class="guide-container">
-
-
-                <div class="guide-item low">
-
-                    <strong>0.5</strong>
-
-                    <span>
-                        بسیار کم
-                    </span>
-
-                    <p>
-                        تعداد پاس بسیار کمتر
-                        نسبت به سایر افراد
-                    </p>
-
-                </div>
-
-
-
-
-
-                <div class="guide-item normal">
-
-                    <strong>1</strong>
-
-                    <span>
-                        عادی
-                    </span>
-
-                    <p>
-                        تعداد پاس استاندارد
-                    </p>
-
-                </div>
-
-
-
-
-
-                <div class="guide-item high">
-
-                    <strong>1.5</strong>
-
-                    <span>
-                        زیاد
-                    </span>
-
-                    <p>
-                        تعداد پاس بیشتر
-                    </p>
-
-                </div>
-
-
-
-                <div class="guide-item max">
-
-                    <strong>2</strong>
-
-                    <span>
-                        حداکثر
-                    </span>
-
-                    <p>
-                        بیشترین سهم پاس
-                    </p>
-
-                </div>
-
-
-            </div>
-
-
-            <div class="guide-note">
-
-                <b>نکته:</b>
-
-                هرچه ضریب کمتر باشد،
-                فرد پاس کمتری دریافت می‌کند.
-                ضریب بالاتر باعث افزایش سهم پاس می‌شود.
-
-            </div>
-
-
-        </section>
         <section class="card">
 
-            <h2>امتیاز پرسنل</h2>
+            <h2>رئیس پاس</h2>
             <div class="person-tools">
 
                 <input type="text" id="newPersonName" placeholder="نام پرسنل">
@@ -138,34 +51,167 @@
                 </button>
 
             </div>
-            <table class="score-table">
 
-                <thead>
+            <div class="table-responsive">
 
-                    <tr>
+                <table class="score-table">
 
-                        <th>ردیف</th>
+                    <thead>
 
-                        <th>نام</th>
+                        <tr>
 
-                        <th>امتیاز</th>
+                            <th>ردیف</th>
 
-                        <th>عملیات</th>
+                            <th>نام و نام خانوادگی</th>
 
-                        <th>وضعیت</th>
-                    </tr>
+                            <th>امتیاز</th>
 
-                </thead>
+                            <th>بازه مجاز</th>
 
-                <tbody id="personTable">
+                            <th>جایگزین</th>
 
-                </tbody>
+                            <th>عملیات</th>
 
-            </table>
+                        </tr>
 
+                    </thead>
+
+                    <tbody id="chiefTable">
+
+                    </tbody>
+
+                </table>
+            </div>
         </section>
+        <section class="card">
 
+            <h2>نگهبان</h2>
 
+            <div class="person-tools">
+
+                <input type="text" id="newGuardName" placeholder="نام نگهبان">
+
+                <button id="addGuardBtn" type="button">
+
+                    افزودن نگهبان
+
+                </button>
+
+            </div>
+            <div class="table-responsive">
+                <table class="score-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ردیف</th>
+
+                            <th>نام و نام خانوادگی</th>
+
+                            <th>امتیاز</th>
+
+                            <th>بازه مجاز</th>
+
+                            <th>جایگزین</th>
+
+                            <th>عملیات</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="guardTable">
+
+                    </tbody>
+
+                </table>
+            </div>
+        </section>
+        <section class="card">
+
+            <h2>نگهبان شب</h2>
+
+            <div class="person-tools">
+
+                <input type="text" id="newNightName" placeholder="نام نگهبان شب">
+
+                <button id="addNightBtn" type="button">
+
+                    افزودن نگهبان شب
+
+                </button>
+
+            </div>
+            <div class="table-responsive">
+                <table class="score-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ردیف</th>
+
+                            <th>نام و نام خانوادگی</th>
+
+                            <th>امتیاز</th>
+
+                            <th>بازه مجاز</th>
+
+                            <th>جایگزین</th>
+
+                            <th>عملیات</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="nightTable">
+
+                    </tbody>
+
+                </table>
+            </div>
+        </section>
+        <section class="card">
+
+            <h2>لیست نیروهای جایگزین</h2>
+
+            <div class="person-tools">
+
+                <input type="text" id="newReserveName" placeholder="نام نیروی جایگزین">
+
+                <button id="addReserveBtn" type="button">
+
+                    افزودن نیروی جایگزین
+
+                </button>
+
+            </div>
+            <div class="table-responsive">
+                <table class="score-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ردیف</th>
+
+                            <th>نام</th>
+
+                            <th>عملیات</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="reserveTable">
+
+                    </tbody>
+
+                </table>
+            </div>
+        </section>
         <!-- دکمه ها -->
 
         <section class="actions">
@@ -194,7 +240,7 @@
             <div class="fairness-box">
 
                 <h2>گزارش عدالت برنامه</h2>
-                <button  id="fairnessPdfBtn"  onclick="downloadFairnessPDF()">
+                <button id="fairnessPdfBtn" onclick="downloadFairnessPDF()">
                     📄 دانلود PDF
                 </button>
 
@@ -211,15 +257,55 @@
             <div id="statsContainer"></div>
 
         </section> -->
+        <div id="toastContainer"></div>
+        <div class="modal-overlay" id="modalOverlay">
 
+            <div class="modal">
+
+                <div class="modal-header">
+
+                    <h3 id="modalTitle"></h3>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <p id="modalMessage"></p>
+
+                    <input type="text" id="modalInput" autocomplete="off">
+                    <select id="modalSelect">
+
+                    </select>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button id="modalCancelBtn" class="btn-secondary">
+
+                        انصراف
+
+                    </button>
+
+                    <button id="modalConfirmBtn" class="btn-primary">
+
+                        تایید
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
+    <script src="app.js"></script>
     <script src="scheduler.js"></script>
 
     <script src="pdf.js"></script>
 
-    <script src="app.js"></script>
 
 </body>
 
