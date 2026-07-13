@@ -40,7 +40,7 @@
             <h2>افسر جانشین </h2>
             <div class="person-tools">
 
-                <input type="text" id="newPersonName" placeholder="نام پرسنل">
+                <input type="text" id="newPersonName" placeholder="نام افسر جانشین">
 
                 <button id="addPersonBtn" type="button">
 
@@ -64,7 +64,7 @@
 
                             <th>امتیاز</th>
 
-                            <th>بازه مجاز</th>
+                       
 
                             <th>جایگزین</th>
 
@@ -87,7 +87,7 @@
 
             <div class="person-tools">
 
-                <input type="text" id="newGuardName" placeholder="نام نگهبان">
+                <input type="text" id="newGuardName" placeholder="نام افسر سر">
 
                 <button id="addGuardBtn" type="button">
 
@@ -109,8 +109,7 @@
 
                             <th>امتیاز</th>
 
-                            <th>بازه مجاز</th>
-
+                     
                             <th>جایگزین</th>
 
                             <th>عملیات</th>
@@ -132,11 +131,11 @@
 
             <div class="person-tools">
 
-                <input type="text" id="newNightName" placeholder="نام نگهبان شب">
+                <input type="text" id="newNightName" placeholder="نام   افسر پاسدار">
 
                 <button id="addNightBtn" type="button">
 
-                    افزودن  افسر پاسدار
+                    افزودن افسر پاسدار
 
                 </button>
 
@@ -154,7 +153,7 @@
 
                             <th>امتیاز</th>
 
-                            <th>بازه مجاز</th>
+                      
 
                             <th>جایگزین</th>
 
@@ -244,13 +243,20 @@
             <div id="scheduleContainer"></div>
 
         </section>
-        <!-- <section class="card">
+        <section class="card">
             <div class="fairness-box">
 
-                <h2>گزارش عدالت برنامه</h2>
-                <button id="fairnessPdfBtn" onclick="downloadFairnessPDF()">
-                    📄 دانلود PDF
-                </button>
+                <div class="section-header">
+
+                    <h2>گزارش عدالت برنامه</h2>
+
+                    <button id="fairnessPdfBtn" onclick="downloadFairnessPDF()">
+
+                        📄 دانلود PDF
+
+                    </button>
+
+                </div>
 
                 <div class="table-wrapper">
 
@@ -259,16 +265,15 @@
                 </div>
 
             </div>
-        </section> -->
-        <!-- آمار -->
-        <!-- 
-        <section class="card">
+        </section>
+
+        <!-- <section class="card">
 
             <h2>آمار</h2>
 
             <div id="statsContainer"></div>
 
-        </section> -->
+        </section>  -->
         <div id="toastContainer"></div>
         <div class="modal-overlay" id="modalOverlay">
 
@@ -314,6 +319,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <script src="app.js"></script>
+    <script src="calender.js"></script>
     <script src="scheduler.js"></script>
     <script src="pdf.js"></script>
     <script src="backup.js"></script>

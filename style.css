@@ -1389,7 +1389,25 @@ padding: 15px 5px;
 
 }
 
+   .section-header{
 
+        flex-direction:column;
+
+        align-items:stretch;
+
+    }
+
+    .section-header h2{
+
+        text-align:center;
+
+    }
+
+    #fairnessPdfBtn{
+
+        width:100%;
+
+    }
 
 .table-responsive::-webkit-scrollbar-thumb{
 
@@ -1786,10 +1804,32 @@ background:#e5e7eb;
     font-size:24px;
 
     font-weight:700;
+        display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
     padding-bottom: 20px;
 
 }
+.day-week{
 
+    font-size:14px;
+
+    font-weight:700;
+
+
+    background:rgba(255,255,255,.18);
+
+    padding:4px 10px;
+
+    border-radius:999px;
+
+    border:1px solid rgba(255,255,255,.25);
+
+    backdrop-filter:blur(4px);
+
+}
 
 .pass-list{
 
@@ -2219,6 +2259,8 @@ border-right:5px solid #f59e0b;
 
     transition:.25s;
 
+    margin-bottom: 20px;
+
 }
 
 
@@ -2245,5 +2287,19 @@ border-right:5px solid #f59e0b;
 
     box-shadow:
     0 25px 60px rgba(15,23,42,.18);
+
+}
+
+.section-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+    gap:15px;
 
 }

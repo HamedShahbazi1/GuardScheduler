@@ -9,7 +9,7 @@ window.PASSES_PER_DAY = 3;
 window.TOTAL_PASSES =
     window.TOTAL_DAYS * window.PASSES_PER_DAY;
 
-window.ALLOWED_SCORES = [0.5,1,2];
+window.ALLOWED_SCORES = [0.5, 1, 2];
 
 
 /*=====================================
@@ -196,7 +196,6 @@ data-id="${person.id}">
 
 </td>
 
-<td>${period}</td>
 
 <td>
 
@@ -366,6 +365,8 @@ function showToast(message, type = "info") {
 =====================================*/
 function hideModal() {
 
+    console.log("hideModal");
+
     modalOverlay.style.display = "none";
 
     modalInput.value = "";
@@ -387,7 +388,7 @@ function showConfirmModal(title, message, onConfirm) {
 
     modalInput.style.display = "none";
 
-modalSelect.style.display = "none";
+    modalSelect.style.display = "none";
     modalConfirmBtn.onclick = function () {
 
         hideModal();
@@ -430,12 +431,12 @@ function showInputModal(title, message, value, onConfirm) {
 =====================================*/
 
 
-function addPersonToList(listName,inputElement,tableElement){
+function addPersonToList(listName, inputElement, tableElement) {
 
     const name = inputElement.value.trim();
 
 
-    if(name===""){
+    if (name === "") {
 
         showToast(
             "نام پرسنل را وارد کنید.",
@@ -447,7 +448,7 @@ function addPersonToList(listName,inputElement,tableElement){
     }
 
 
-    if(personExists(listName,name)){
+    if (personExists(listName, name)) {
 
         showToast(
             "این پرسنل قبلاً ثبت شده است.",
@@ -459,23 +460,23 @@ function addPersonToList(listName,inputElement,tableElement){
     }
 
 
-    const person={
+    const person = {
 
-        id:generatePersonId(),
+        id: generatePersonId(),
 
-        name:name,
+        name: name,
 
-        score:1,
+        score: 1,
 
-        active:true,
+        active: true,
 
-        assigned:false,
+        assigned: false,
 
-        createdAt:new Date().toISOString(),
+        createdAt: new Date().toISOString(),
 
-        assignedDay:null,
+        assignedDay: null,
 
-        replacementId:null
+        replacementId: null
 
     };
 
@@ -492,7 +493,7 @@ function addPersonToList(listName,inputElement,tableElement){
     );
 
 
-    inputElement.value="";
+    inputElement.value = "";
 
 
     showToast(
@@ -502,7 +503,7 @@ function addPersonToList(listName,inputElement,tableElement){
 
 }
 
-function addChiefPerson(){
+function addChiefPerson() {
 
     addPersonToList(
         "chief",
@@ -513,7 +514,7 @@ function addChiefPerson(){
 }
 
 
-function addGuardPerson(){
+function addGuardPerson() {
 
     addPersonToList(
         "guard",
@@ -524,7 +525,7 @@ function addGuardPerson(){
 }
 
 
-function addNightPerson(){
+function addNightPerson() {
 
     addPersonToList(
         "night",
@@ -699,7 +700,7 @@ function selectReplacement(listName, id) {
         `;
 
     });
-
+    modalCancelBtn.onclick = hideModal;
     modalConfirmBtn.onclick = function () {
 
         person.replacementId =
@@ -714,6 +715,11 @@ function selectReplacement(listName, id) {
                 Number(modalSelect.value);
 
         saveList(listName);
+        updateScheduleReplacement();
+
+        saveSchedule();
+
+        renderSchedule();
 
         if (listName === "chief") {
 
@@ -839,7 +845,7 @@ function togglePerson(listName, id) {
 
     saveList(listName);
 
-  refreshListTable(listName);
+    refreshListTable(listName);
 
     showToast("وضعیت پرسنل تغییر کرد.", "success");
 
@@ -848,10 +854,10 @@ function togglePerson(listName, id) {
 /*=====================================
         تغییر امتیاز
 =====================================*/
-function refreshListTable(listName){
+function refreshListTable(listName) {
 
 
-    if(listName==="chief"){
+    if (listName === "chief") {
 
         renderList(
             "chief",
@@ -861,7 +867,7 @@ function refreshListTable(listName){
     }
 
 
-    if(listName==="guard"){
+    if (listName === "guard") {
 
         renderList(
             "guard",
@@ -871,7 +877,7 @@ function refreshListTable(listName){
     }
 
 
-    if(listName==="night"){
+    if (listName === "night") {
 
         renderList(
             "night",
@@ -892,7 +898,7 @@ function updateScore(listName, id, score) {
     }
 
     person.score = Number(score);
-    if(!window.ALLOWED_SCORES.includes(person.score)){
+    if (!window.ALLOWED_SCORES.includes(person.score)) {
 
         showToast("امتیاز معتبر نیست.", "error");
 
@@ -900,11 +906,11 @@ function updateScore(listName, id, score) {
 
     }
 
-saveList(listName);
+    saveList(listName);
 
-refreshListTable(listName);
+    refreshListTable(listName);
 
-showToast("امتیاز با موفقیت تغییر کرد.", "success");
+    showToast("امتیاز با موفقیت تغییر کرد.", "success");
 
 }
 
@@ -945,7 +951,7 @@ function editPerson(listName, id) {
 
             saveList(listName);
 
-     refreshListTable(listName);
+            refreshListTable(listName);
 
             showToast("اطلاعات ویرایش شد.", "success");
 
@@ -1043,7 +1049,7 @@ function showCurrentDate() {
     `;
 
 }
-function getWeekDayByProgramDay(day){
+function getWeekDayByProgramDay(day) {
 
     const date = new Date(window.currentProgramDate);
 
@@ -1066,7 +1072,7 @@ function getWeekDayByProgramDay(day){
     return weekDays[date.getDay()];
 
 }
-function getShamsiDateByProgramDay(day){
+function getShamsiDateByProgramDay(day) {
 
     const date = new Date(window.currentProgramDate);
 
@@ -1093,54 +1099,54 @@ addPersonBtn.addEventListener(
     addChiefPerson
 );
 document
-.getElementById("addGuardBtn")
-.addEventListener(
-    "click",
-    addGuardPerson
-);
+    .getElementById("addGuardBtn")
+    .addEventListener(
+        "click",
+        addGuardPerson
+    );
 
 
 document
-.getElementById("addNightBtn")
-.addEventListener(
-    "click",
-    addNightPerson
-);
+    .getElementById("addNightBtn")
+    .addEventListener(
+        "click",
+        addNightPerson
+    );
 document
-.getElementById("newGuardName")
-.addEventListener(
-    "keydown",
-    function(event){
+    .getElementById("newGuardName")
+    .addEventListener(
+        "keydown",
+        function (event) {
 
-        if(event.key==="Enter"){
+            if (event.key === "Enter") {
 
-            addGuardPerson();
+                addGuardPerson();
+
+            }
 
         }
-
-    }
-);
+    );
 
 
 document
-.getElementById("newNightName")
-.addEventListener(
-    "keydown",
-    function(event){
+    .getElementById("newNightName")
+    .addEventListener(
+        "keydown",
+        function (event) {
 
-        if(event.key==="Enter"){
+            if (event.key === "Enter") {
 
-            addNightPerson();
+                addNightPerson();
+
+            }
 
         }
-
-    }
-);
+    );
 newPersonNameInput.addEventListener("keydown", function (event) {
 
     if (event.key === "Enter") {
 
-      addChiefPerson();
+        addChiefPerson();
 
     }
 
@@ -1275,7 +1281,85 @@ reserveTable.addEventListener("click", function (event) {
     }
 
 });
+function updateScheduleReplacement() {
 
+    monthlySchedule.forEach(function (day) {
+
+        ["chief", "guard", "night"].forEach(function (role) {
+
+            let person = day[role];
+
+            if (!person) return;
+
+            const original =
+                lists[role].find(function (item) {
+
+                    return item.id === (
+                        person.originalPerson
+                            ? person.originalPerson.id
+                            : person.id
+                    );
+
+                });
+
+            if (!original) {
+                return;
+            }
+
+            if (!original.replacementId) {
+
+                day[role] = original;
+
+                return;
+
+            }
+
+            const replacement =
+                reservePersons.find(function (item) {
+
+                    return item.id === original.replacementId;
+
+                });
+
+            if (replacement) {
+
+                day[role] = {
+
+                    ...replacement,
+
+                    originalPerson: original
+
+                };
+
+            }
+
+            if (!original.replacementId) {
+
+                day[role] = original;
+
+                return;
+
+            }
+
+        
+
+            if (replacement) {
+
+                day[role] = {
+
+                    ...replacement,
+
+                    originalPerson: original
+
+                };
+
+            }
+
+        });
+
+    });
+
+}
 loadList("chief");
 
 loadList("guard");
