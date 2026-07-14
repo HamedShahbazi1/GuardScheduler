@@ -9,7 +9,11 @@ let holidayDays = [];
 let weekendDays = [];
 
 let normalDays = [];
+let score05Days = [];
 
+let score1Days = [];
+
+let score2Days = [];
 const STORAGE_KEY = "GuardSchedulerSchedule";
 
 const REPORT_KEY = "GuardSchedulerReport";
@@ -47,56 +51,22 @@ function createScheduleGroups() {
 
 function calculateTargetPass(persons) {
 
-
-    let totalWeight = 0;
-
-
     persons.forEach(function (person) {
-
-
-        // همه افراد سهم یکسان دارند
-        totalWeight += 1;
-
-
-    });
-
-
-
-    persons.forEach(function (person) {
-
-
-        let weight = 1;
-
-
-
-        person.targetPass =
-            Math.floor(
-                TOTAL_PASSES *
-                weight /
-                totalWeight
-            );
-
 
         person.assignedCount = 0;
 
         person.stats = {
 
             holiday: 0,
-
             weekend: 0,
-
             thursday: 0,
-
             friday: 0
 
         };
 
-
     });
 
-
 }
-
 /*=====================================
       بررسی وجود اطلاعات
 =====================================*/
@@ -132,239 +102,227 @@ function validateScheduleData(groups) {
 }
 
 
+function getDayScore(person, dayInfo) {
 
+    let score = 0;
+
+    switch (person.score) {
+
+        case 0.5:
+
+            if (dayInfo.weekDay === "پنجشنبه") score += 300;
+            if (dayInfo.weekDay === "جمعه") score += 290;
+            if (dayInfo.weekDay === "شنبه") score += 280;
+
+            break;
+
+
+        case 1:
+
+            if (dayInfo.weekDay === "یکشنبه") score += 300;
+            if (dayInfo.weekDay === "دوشنبه") score += 250;
+            if (dayInfo.weekDay === "شنبه") score += 200;
+            if (dayInfo.weekDay === "پنجشنبه") score += 100;
+
+            break;
+
+
+        case 2:
+
+            if (dayInfo.weekDay === "دوشنبه") score += 300;
+            if (dayInfo.weekDay === "سه‌شنبه") score += 290;
+            if (dayInfo.weekDay === "چهارشنبه") score += 280;
+
+            break;
+
+    }
+
+    return score;
+
+}
 /*=====================================
       اولویت روز برای هر امتیاز
 =====================================*/
 
-function getDayPriority(person, dayInfo) {
+function assignGroup(persons, role) {
 
-    // امتیاز 2 (بهترین روزها)
-    if (person.score === 2) {
+    const score05 = persons.filter(p => p.score === 0.5);
+    const score1 = persons.filter(p => p.score === 1);
+    const score2 = persons.filter(p => p.score === 2);
 
-        if (dayInfo.weekend || dayInfo.holiday) {
+    fillPersons(score05, role);
+    fillPersons(score1, role);
+    fillPersons(score2, role);
 
-            return -1000;
+}
+function fillPersons(persons, role) {
 
-        }
+    let level = 1;
 
-        return 300;
+    while (true) {
+
+        let added = false;
+        persons.sort(function (a, b) {
+
+            if (a.assignedCount !== b.assignedCount) {
+
+                return a.assignedCount - b.assignedCount;
+
+            }
+
+            return Math.random() - 0.5;
+
+        });
+        persons.forEach(function (person) {
+
+            if (person.assignedCount >= level)
+                return;
+
+            const day = findBestDay(person, role);
+
+            if (day !== null) {
+
+                monthlySchedule[day - 1][role] = person;
+
+                person.assignedCount++;
+
+                addToReport(person, role, day);
+
+                added = true;
+
+            }
+
+        });
+
+        if (!added)
+            break;
+
+        level++;
 
     }
-
-    // امتیاز 1 (متعادل)
-    if (person.score === 1) {
-
-        if (dayInfo.holiday) {
-
-            return 120;
-
-        }
-
-        if (dayInfo.weekend) {
-
-            return 150;
-
-        }
-
-        return 200;
-
-    }
-
-    // امتیاز 0.5 (روزهای سخت)
-    if (person.score === 0.5) {
-
-        if (dayInfo.holiday) {
-
-            return 300;
-
-        }
-
-        if (dayInfo.weekend) {
-
-            return 250;
-
-        }
-
-        return 50;
-
-    }
-
-    return 0;
 
 }
 
 
 /*=====================================
-      انتخاب نفر
+      بررسی مجاز بودن روز
 =====================================*/
 
-function pickPerson(persons, day) {
+
+/*=====================================
+      چیدمان یک گروه
+=====================================*/
+
+/*=====================================
+      چیدن افراد داخل روزهای مجاز
+=====================================*/
+
+/*=====================================
+      روزهای مجاز هر امتیاز
+=====================================*/
+
+function getAllowedDays(score) {
+
+    if (score === 0.5) {
+
+        return [
+            "پنجشنبه",
+            "جمعه",
+            "شنبه"
+        ];
+
+    }
+
+    if (score === 1) {
+
+        return [
+            "شنبه",
+            "یکشنبه",
+            "دوشنبه",
+            "پنجشنبه"
+        ];
+
+    }
+
+    if (score === 2) {
+
+        return [
+            "دوشنبه",
+            "سه‌شنبه",
+            "چهارشنبه"
+        ];
+
+    }
+
+    return [];
+
+}
 
 
 
+function hasRecentPass(person, role, day) {
 
-    const dayInfo =
-        monthCalendar.find(function (item) {
+    // روز قبل
+    if (day > 1) {
 
-            return item.day === day;
+        const yesterday = monthlySchedule[day - 2][role];
 
-        });
+        if (yesterday && yesterday.id === person.id) {
 
-    let available =
-        persons.filter(function (person) {
+            return true;
 
-            if (
-                person.score === 2 &&
-                (dayInfo.weekend || dayInfo.holiday)
-            ) {
-                return false;
-            }
+        }
 
-            return (
+    }
 
-                person.assignedCount < person.targetPass
+    return false;
 
-                &&
+}
+function findBestDay(person, role) {
 
-                !isAlreadyAssigned(
-                    person,
-                    day
-                )
+    const allowedDays = getAllowedDays(person.score);
 
-            );
-
-        });
+    let candidates = [];
+    let bestScore = -1;
 
 
+    monthCalendar.forEach(function (info) {
 
-    if (available.length === 0) {
+        if (!allowedDays.includes(info.weekDay))
+            return;
+
+        if (monthlySchedule[info.day - 1][role] !== null)
+            return;
+        if (hasRecentPass(person, role, info.day))
+            return;
+        const score = getDayScore(person, info);
+
+        if (score > bestScore) {
+
+            bestScore = score;
+
+            candidates = [info];
+
+        }
+        else if (score === bestScore) {
+
+            candidates.push(info);
+
+        }
+
+    });
+
+    if (candidates.length === 0) {
 
         return null;
 
     }
 
+    const randomIndex = Math.floor(Math.random() * candidates.length);
 
-
-    available.sort(function (a, b) {
-
-        const priorityA =
-            getDayPriority(a, dayInfo);
-
-        const priorityB =
-            getDayPriority(b, dayInfo);
-
-        if (priorityA !== priorityB) {
-
-            return priorityB - priorityA;
-
-        }
-
-        /* اگر امروز تعطیل یا آخر هفته باشد */
-
-        if (dayInfo.weekend || dayInfo.holiday) {
-
-            if (a.stats.holiday !== b.stats.holiday) {
-
-                return a.stats.holiday - b.stats.holiday;
-
-            }
-
-        }
-
-        if (a.assignedCount !== b.assignedCount) {
-
-            return a.assignedCount - b.assignedCount;
-
-        }
-
-        return Math.random() - 0.5;
-
-    });
-
-    const minAssigned = available[0].assignedCount;
-
-    const candidates = available.filter(function (person) {
-
-        return person.assignedCount === minAssigned;
-
-    });
-
-    const randomIndex =
-        Math.floor(Math.random() * candidates.length);
-
-    const selected = candidates[randomIndex];
-
-
-
-
-
-    if (!assignedHistory[selected.id]) {
-
-        assignedHistory[selected.id] = [];
-
-    }
-
-
-    assignedHistory[selected.id].push(day);
-
-    selected.assignedCount =
-        (selected.assignedCount || 0) + 1;
-
-    /* ثبت آمار روز */
-
-    if (dayInfo.weekend) {
-
-        selected.stats.weekend++;
-
-    }
-
-    if (dayInfo.weekDay === "پنجشنبه") {
-
-        selected.stats.thursday++;
-
-    }
-
-    if (dayInfo.weekDay === "جمعه") {
-
-        selected.stats.friday++;
-
-    }
-
-    if (dayInfo.holiday) {
-
-        selected.stats.holiday++;
-
-    }
-    /* اگر جایگزین انتخاب شده باشد */
-    if (selected.replacementId) {
-
-        const replacement =
-            lists.reserve.find(function (person) {
-
-                return person.id === selected.replacementId;
-
-            });
-
-        if (replacement) {
-
-            return {
-
-                ...replacement,
-
-                originalPerson: selected
-
-            };
-
-        }
-
-    }
-
-    return selected;
-
+    return candidates[randomIndex].day;
 
 }
-
 /*=====================================
       ساخت اطلاعات یک روز
 =====================================*/
@@ -517,43 +475,22 @@ function generateSchedule() {
 
     console.log(normalDays);
 
-    for (
-        let day = 1;
-        day <= TOTAL_DAYS;
-        day++
-    ) {
+    monthlySchedule = [];
 
+    for (let day = 1; day <= TOTAL_DAYS; day++) {
 
-        const schedule =
-            createDaySchedule(day);
-
-
-
-        const chief =
-            pickPerson(groups.chief, day);
-
-        const guard =
-            pickPerson(groups.guard, day);
-
-        const night =
-            pickPerson(groups.night, day);
-
-
-        schedule.chief = chief;
-        schedule.guard = guard;
-        schedule.night = night;
-
-
-        monthlySchedule.push(schedule);
-        addToReport(schedule.chief, "افسر جانشین", day);
-
-        addToReport(schedule.guard, "افسر سر", day);
-
-        addToReport(schedule.night, "افسر پاسدار", day);
+        monthlySchedule.push({
+            day,
+            chief: null,
+            guard: null,
+            night: null
+        });
 
     }
 
-
+    assignGroup(groups.chief, "chief");
+    assignGroup(groups.guard, "guard");
+    assignGroup(groups.night, "night");
     console.log(monthlySchedule);
 
 
@@ -568,50 +505,12 @@ function generateSchedule() {
 
 
 }
-function getPassPriority(person) {
 
-    if (person.score === 2) {
-
-        return ["pass1", "pass2"];
-
-    }
-
-
-    if (person.score === 1) {
-
-        return ["pass2", "pass3"];
-
-    }
-
-
-    if (person.score === 0.5) {
-
-        return ["pass3"];
-
-    }
-
-
-    return [];
-
-}
 /*=====================================
       بررسی انتخاب قبلی
 =====================================*/
 
-function isAlreadyAssigned(person, day) {
 
-
-    if (!assignedHistory[person.id]) {
-
-        assignedHistory[person.id] = [];
-
-    }
-
-
-    return assignedHistory[person.id].includes(day);
-
-
-}
 
 /*=====================================
       نمایش برنامه ماهانه
@@ -866,6 +765,10 @@ function buildMonthCalendar() {
     weekendDays = [];
 
     normalDays = [];
+    score05Days = [];
+    score1Days = [];
+    score2Days = [];
+
 
     for (let day = 1; day <= TOTAL_DAYS; day++) {
 
@@ -893,6 +796,33 @@ function buildMonthCalendar() {
 
         monthCalendar.push(info);
 
+        // روزهای مخصوص امتیاز 0.5
+        if (
+            info.weekDay === "پنجشنبه" ||
+            info.weekDay === "جمعه" ||
+            info.weekDay === "شنبه"
+        ) {
+            score05Days.push(info);
+        }
+
+        // روزهای مخصوص امتیاز 1
+        if (
+            info.weekDay === "شنبه" ||
+            info.weekDay === "یکشنبه" ||
+            info.weekDay === "دوشنبه"
+        ) {
+            score1Days.push(info);
+        }
+
+        // روزهای مخصوص امتیاز 2
+        if (
+            info.weekDay === "دوشنبه" ||
+            info.weekDay === "سه‌شنبه" ||
+            info.weekDay === "چهارشنبه"
+        ) {
+            score2Days.push(info);
+        }
+
         if (info.weekend) {
 
             weekendDays.push(info);
@@ -905,6 +835,7 @@ function buildMonthCalendar() {
         }
 
     }
+
 
 }
 function getWeekDay(day) {
@@ -929,9 +860,56 @@ function renderReport() {
 
     fairnessContainer.innerHTML = "";
 
+
+    createReportSection(
+        "👮 افسر جانشین",
+        "chief"
+    );
+
+
+    createReportSection(
+        "🛡️ افسر سر",
+        "guard"
+    );
+
+
+    createReportSection(
+        "🌙 افسر پاسدار",
+        "night"
+    );
+
+
+}
+
+
+
+function createReportSection(title, role) {
+
+
+    const section = document.createElement("div");
+
+    section.className = "guard-report-section";
+
+
+    const header = document.createElement("div");
+
+    header.className = "guard-report-header";
+
+    header.innerHTML = title;
+
+
+
+    const card = document.createElement("div");
+
+    card.className = "guard-report-card";
+
+
+
     const table = document.createElement("table");
 
-    table.className = "score-table";
+    table.className = "guard-report-table";
+
+
 
     table.innerHTML = `
 
@@ -941,8 +919,6 @@ function renderReport() {
 
 <th>نام</th>
 
-<th>سمت</th>
-
 <th>تعداد پاس</th>
 
 <th>روزهای پاس</th>
@@ -951,62 +927,124 @@ function renderReport() {
 
 </thead>
 
+
 <tbody>
 
 </tbody>
 
 `;
 
+
+
     const tbody = table.querySelector("tbody");
 
-    Object.values(scheduleReport).forEach(function (item) {
+
+
+    Object.values(scheduleReport)
+
+    .filter(function(item){
+
+        return item.role === role;
+
+    })
+
+    .forEach(function(item){
+
+
 
         const tr = document.createElement("tr");
 
+
         tr.innerHTML = `
 
-        <td>${item.name}</td>
 
-        <td>${item.role}</td>
+<td>
 
-        <td>${item.count}</td>
-
-   <td>
-
-${item.days.map(function (day) {
-
-            return `
-
-<div class="pass-day">
-
-    <span class="pass-day-number">
-
-        روز ${day}
-
-    </span>
-
-    <span class="pass-day-week">
-
-        ${getWeekDayByProgramDay(day)}
-
-    </span>
-
- 
-
-</div>
-
-`;
-
-        }).join("<br>")}
+${item.name}
 
 </td>
 
-        `;
 
-        tbody.appendChild(tr);
 
-    });
+<td>
 
-    fairnessContainer.appendChild(table);
+<span class="guard-report-count">
+
+${item.count}
+
+</span>
+
+</td>
+
+
+
+
+<td>
+
+<div class="guard-report-days">
+
+
+${item.days.map(function(day){
+
+
+return `
+
+
+<div class="guard-report-day">
+
+
+روز ${day}
+
+<br>
+
+
+<small>
+
+${getWeekDayByProgramDay(day)}
+
+</small>
+
+
+</div>
+
+
+`;
+
+
+}).join("")}
+
+
+</div>
+
+
+</td>
+
+
+
+`;
+
+
+
+tbody.appendChild(tr);
+
+
+
+});
+
+
+
+card.appendChild(table);
+
+
+section.appendChild(header);
+
+
+section.appendChild(card);
+
+
+
+fairnessContainer.appendChild(section);
+
+
 
 }

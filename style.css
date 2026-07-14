@@ -2023,9 +2023,8 @@ border-right:5px solid #f59e0b;
 
 .person-name{
 
-    font-size:20px;
+    font-size:14px;
 
-    font-weight:700;
 
     margin-top:8px;
 
@@ -2301,5 +2300,133 @@ border-right:5px solid #f59e0b;
     margin-bottom:20px;
 
     gap:15px;
+
+}
+
+.guard-report-section{
+
+    margin-top:35px;
+
+}
+
+.guard-report-section:first-child{
+
+    margin-top:0;
+
+}
+
+.guard-report-header{
+
+    background:linear-gradient(135deg,#1e3a8a,#2563eb);
+
+    color:#fff;
+
+    padding:15px 20px;
+
+    border-radius:12px 12px 0 0;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    box-shadow:0 4px 12px rgba(37,99,235,.25);
+
+}
+
+.guard-report-card{
+
+    background:#fff;
+
+    border-radius:0 0 12px 12px;
+
+    overflow:hidden;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.guard-report-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+.guard-report-table th{
+
+    background:#eff6ff;
+
+    color:#1e3a8a;
+
+    padding:14px;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+}
+
+.guard-report-table td{
+
+    padding:14px;
+
+    border-bottom:1px solid #ececec;
+
+    text-align:center;
+
+}
+
+.guard-report-table tr:hover{
+
+    background:#f8fbff;
+
+}
+
+.guard-report-count{
+
+    display:inline-block;
+
+    min-width:40px;
+
+    background:#2563eb;
+
+    color:#fff;
+
+    border-radius:50px;
+
+    padding:5px 12px;
+
+    font-weight:bold;
+
+}
+
+.guard-report-days{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:6px;
+
+}
+
+.guard-report-day{
+
+    background:#eef4ff;
+
+    color:#2563eb;
+
+    padding:5px 10px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+    border:1px solid #dbeafe;
 
 }
