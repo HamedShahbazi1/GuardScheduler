@@ -15,7 +15,7 @@ window.ALLOWED_SCORES = [0.5, 1, 2];
 /*=====================================
         اطلاعات لیست‌ها
 =====================================*/
-
+window.replacements = [];
 window.lists = {
 
     chief: [],
@@ -33,12 +33,10 @@ window.lists = {
 const STORAGE_KEYS = {
 
     chief: "guard_scheduler_chief",
-
     guard: "guard_scheduler_guard",
-
     night: "guard_scheduler_night",
-
-    reserve: "guard_scheduler_reserve"
+    reserve: "guard_scheduler_reserve",
+    replacements: "guard_scheduler_replacements"
 
 };
 const persons = lists.chief;
@@ -60,6 +58,30 @@ function saveList(listName) {
         JSON.stringify(lists[listName])
 
     );
+
+}
+function saveReplacements() {
+
+    localStorage.setItem(
+        STORAGE_KEYS.replacements,
+        JSON.stringify(window.replacements)
+    );
+
+}
+function loadReplacements() {
+
+    const data =
+        localStorage.getItem(
+            STORAGE_KEYS.replacements
+        );
+
+
+    if (data) {
+
+        window.replacements =
+            JSON.parse(data);
+
+    }
 
 }
 /*=====================================
@@ -116,7 +138,8 @@ const reserveTable =
 
 const newReserveNameInput =
     document.getElementById("newReserveName");
-
+const newReserveRoleSelect =
+    document.getElementById("newReserveRole");
 const addReserveBtn =
     document.getElementById("addReserveBtn");
 const toastContainer = document.getElementById("toastContainer");
@@ -139,7 +162,44 @@ const startDate =
 /*=====================================
             توابع
 =====================================*/
+function getPersonReplacementName(listName, personId) {
 
+    const replacement = window.replacements.find(function (item) {
+
+        return (
+            item.role === listName &&
+            item.originalId === personId
+        );
+
+    });
+
+
+    if (!replacement) {
+
+        return "---";
+
+    }
+
+
+    if (replacement.replacementId === 0) {
+
+        return "بدون جایگزین";
+
+    }
+
+
+    const person = reservePersons.find(function (p) {
+
+        return p.id === replacement.replacementId;
+
+    });
+
+
+    return person
+        ? person.name
+        : "---";
+
+}
 /*=====================================
       ساخت ردیف جدول پرسنل
 =====================================*/
@@ -199,21 +259,7 @@ data-id="${person.id}">
 
 <td>
 
-${person.replacementId
-
-            ?
-
-            reservePersons.find(r => r.id === person.replacementId)?.name
-
-            ||
-
-            "---"
-
-            :
-
-            "---"
-
-        }
+${getPersonReplacementName(listName, person.id)}
 
 </td>
 
@@ -369,11 +415,32 @@ function hideModal() {
 
     modalOverlay.style.display = "none";
 
+
     modalInput.value = "";
 
     modalInput.style.display = "none";
 
     modalSelect.style.display = "none";
+
+
+    const oldDaySelect =
+        document.getElementById("replacementDaySelect");
+
+    if (oldDaySelect) {
+
+      oldDaySelect.style.display = "none";
+
+    }
+
+
+    const oldLabel =
+        document.querySelector(".replacement-label");
+
+    if (oldLabel) {
+
+      oldDaySelect.style.display = "none";
+
+    }
 
 }
 function showConfirmModal(title, message, onConfirm) {
@@ -402,6 +469,29 @@ function showConfirmModal(title, message, onConfirm) {
 }
 function showInputModal(title, message, value, onConfirm) {
 
+ // مخفی کردن بخش های مربوط به جایگزینی
+    const replacementDay =
+        document.getElementById("replacementDaySelect");
+
+modalSelect.style.display = "none";
+
+modalSelect.innerHTML = "";
+    if (replacementDay) {
+
+        replacementDay.style.display = "none";
+
+    }
+
+
+    const replacementLabel =
+        document.querySelector(".replacement-label");
+
+
+    if (replacementLabel) {
+
+        replacementLabel.style.display = "none";
+
+    }
     modalTitle.textContent = title;
 
     modalMessage.textContent = message;
@@ -538,7 +628,18 @@ function addReservePerson() {
 
     const name =
         newReserveNameInput.value.trim();
+    const role =
+        newReserveRoleSelect.value;
+    if (!role) {
 
+        showToast(
+            "سمت نیرو را انتخاب کنید",
+            "warning"
+        );
+
+        return;
+
+    }
     if (name === "") {
 
         showToast(
@@ -553,7 +654,9 @@ function addReservePerson() {
 
         id: generatePersonId(),
 
-        name: name
+        name: name,
+
+        role: role
 
     });
 
@@ -562,7 +665,7 @@ function addReservePerson() {
     renderReservePersons();
 
     newReserveNameInput.value = "";
-
+    newReserveRoleSelect.value = "chief";
     showToast(
         "نیروی جایگزین اضافه شد",
         "success");
@@ -600,16 +703,36 @@ function deleteReservePerson(id) {
         }
 
     );
-    persons.forEach(function (person) {
+    ["chief", "guard", "night"].forEach(function (listName) {
 
-        if (person.replacementId === id) {
+        lists[listName].forEach(function (person) {
+            const days = getPersonScheduleDays(
+                listName,
+                person.id
+            );
 
-            person.replacementId = null;
 
-        }
+            if (days.length === 0) {
+
+                showToast(
+                    "این فرد هنوز پاس ندارد",
+                    "warning"
+                );
+
+                return;
+
+            }
+            if (person.replacementId === id) {
+
+                person.replacementId = null;
+
+            }
+
+        });
+
+        saveList(listName);
 
     });
-    saveList("chief");
 
 }
 function editReservePerson(id) {
@@ -651,7 +774,26 @@ function editReservePerson(id) {
 }
 function selectReplacement(listName, id) {
 
+
     const person = findPersonById(listName, id);
+    let currentReplacement = null;
+
+
+    const oldReplacement = window.replacements.find(function (item) {
+
+        return (
+            item.originalId === id &&
+            item.role === listName
+        );
+
+    });
+
+
+    if (oldReplacement) {
+
+        currentReplacement = oldReplacement.replacementId;
+
+    }
 
     if (!person) {
 
@@ -659,89 +801,266 @@ function selectReplacement(listName, id) {
 
     }
 
-    modalTitle.textContent = "انتخاب جایگزین";
 
-    modalMessage.textContent = "یک نفر را انتخاب کنید.";
+    const days = getPersonScheduleDays(
+        listName,
+        id
+    );
+
+
+    if (days.length === 0) {
+
+        showToast(
+            "ابتدا برنامه را ایجاد کنید",
+            "warning"
+        );
+
+        return;
+
+    }
+
+
+
+    modalTitle.textContent =
+        "انتخاب روز جایگزینی";
+
+
+
+    modalMessage.textContent =
+        "روز مورد نظر برای جایگزینی را انتخاب کنید.";
+
+if (!document.querySelector(".replacement-label")) {
+
+    modalSelect.insertAdjacentHTML(
+        "beforebegin",
+        `
+        <label class="replacement-label">
+            📅 انتخاب روز پاس
+        </label>
+        `
+    );
+
+}
 
     modalInput.style.display = "none";
 
     modalSelect.style.display = "block";
+    let daySelect = document.getElementById("replacementDaySelect");
 
-    modalOverlay.style.display = "flex";
 
-    modalSelect.innerHTML = "";
+    if (!daySelect) {
 
-    modalSelect.innerHTML += `
+        daySelect = document.createElement("select");
 
-    <option value="">
+        daySelect.id = "replacementDaySelect";
+daySelect.className = "replacement-day-select";
+        modalSelect.parentNode.appendChild(daySelect);
 
-    بدون جایگزین
+    }
+
+
+    daySelect.innerHTML = "";
+
+daySelect.style.display = "block";
+    days.forEach(function (item) {
+
+        daySelect.innerHTML += `
+
+    <option value="${item.day}">
+
+    روز ${item.day} - ${item.weekDay}
 
     </option>
 
     `;
 
-    reservePersons.forEach(function (item) {
-
-        modalSelect.innerHTML += `
-
-        <option
-
-        value="${item.id}"
-
-        ${person.replacementId === item.id ? "selected" : ""}
-
-        >
-
-        ${item.name}
-
-        </option>
-
-        `;
-
     });
-    modalCancelBtn.onclick = hideModal;
-    modalConfirmBtn.onclick = function () {
+    modalOverlay.style.display = "flex";
 
-        person.replacementId =
 
-            modalSelect.value === ""
-                ?
 
-                null
 
-                :
 
-                Number(modalSelect.value);
 
-        saveList(listName);
-        updateScheduleReplacement();
+    const available =
+        reservePersons.filter(function (item) {
 
-        saveSchedule();
+            return item.role === listName;
 
-        renderSchedule();
+        });
 
-        if (listName === "chief") {
 
-            renderList("chief", chiefTable);
 
-        }
+    if (available.length === 0) {
 
-        if (listName === "guard") {
-
-            renderList("guard", guardTable);
-
-        }
-
-        if (listName === "night") {
-
-            renderList("night", nightTable);
-
-        }
+        showToast(
+            "نیروی جایگزین ثبت نشده است",
+            "warning"
+        );
 
         hideModal();
 
+        return;
+
+    }
+
+
+    modalSelect.innerHTML = `
+
+<option value="0">
+بدون جایگزین
+</option>
+
+`;
+
+    available.forEach(function (item) {
+
+        modalSelect.innerHTML += `
+
+    <option 
+    value="${item.id}"
+    ${currentReplacement === item.id ? "selected" : ""}
+    >
+
+    ${item.name}
+
+    </option>
+
+    `;
+
+    });
+
+
+    if (currentReplacement === null) {
+
+        modalSelect.value = "0";
+
+    }
+
+
+    modalConfirmBtn.onclick = function () {
+
+        const day = Number(daySelect.value);
+
+        const replacementId = Number(modalSelect.value);
+
+
+        // حذف جایگزینی قبلی همان روز
+        window.replacements = window.replacements.filter(function (item) {
+
+            return !(
+                item.originalId === id &&
+                item.role === listName &&
+                item.day === day
+            );
+
+        });
+
+
+        // اگر بدون جایگزین انتخاب شده
+       if (replacementId === 0) {
+
+
+    window.replacements =
+    window.replacements.filter(function(item){
+
+        return !(
+            item.originalId === id &&
+            item.role === listName &&
+            item.day === day
+        );
+        
+
+    });
+
+
+
+    const original =
+    lists[listName].find(function(p){
+
+        return p.id === id;
+
+    });
+
+
+    if(monthlySchedule[day-1] && original){
+
+        monthlySchedule[day-1][listName] = original;
+
+    }
+
+saveReplacements();
+
+applyReplacements();
+
+renderSchedule();
+
+renderList(
+    listName,
+    listName === "chief"
+        ? chiefTable
+        : listName === "guard"
+            ? guardTable
+            : nightTable
+);
+
+saveSchedule();
+
+hideModal();
+
+showToast(
+    "جایگزین با موفقیت ثبت شد",
+    "success"
+);
+
+
+    return;
+
+}
+
+
+        // ثبت جایگزین جدید
+
+        window.replacements.push({
+
+            originalId: id,
+
+            replacementId: replacementId,
+
+            role: listName,
+
+            day: day
+
+        });
+
+        saveReplacements();
+
+        applyReplacements();
+
+        renderSchedule();
+
+        renderList(
+            listName,
+            listName === "chief"
+                ? chiefTable
+                : listName === "guard"
+                    ? guardTable
+                    : nightTable
+        );
+
+        saveSchedule();
+
+hideModal();
+
+showToast(
+    "جایگزین با موفقیت ثبت شد",
+    "success"
+);
     };
+
+
+    modalCancelBtn.onclick = hideModal;
+
 
 }
 /*=====================================
@@ -965,14 +1284,35 @@ function renderReservePersons() {
     reserveTable.innerHTML = "";
 
     reservePersons.forEach(function (person, index) {
+        if (!person.role) {
 
+            person.role = "chief";
+
+        }
         const tr = document.createElement("tr");
 
         tr.innerHTML = `
 
-        <td>${index + 1}</td>
+<td>${index + 1}</td>
 
-        <td>${person.name}</td>
+<td>${person.name}</td>
+
+
+<td>
+
+${person.role === "chief"
+                ? "افسر جانشین"
+                : person.role === "guard"
+                    ? "افسر سر"
+                    : person.role === "night"
+                        ? "افسر پاسدار"
+                        : "---"
+            }
+
+</td>
+
+
+
 
         <td>
 
@@ -1341,7 +1681,7 @@ function updateScheduleReplacement() {
 
             }
 
-        
+
 
             if (replacement) {
 
@@ -1367,6 +1707,8 @@ loadList("guard");
 loadList("night");
 
 loadList("reserve");
+
+loadReplacements();
 
 renderList("chief", chiefTable);
 

@@ -2430,3 +2430,126 @@ border-right:5px solid #f59e0b;
     border:1px solid #dbeafe;
 
 }
+
+.reserve-role-select{
+
+    width:180px;
+
+    padding:10px 14px;
+
+    border-radius:12px;
+
+    border:1px solid #cbd5e1;
+
+    background:#f8fafc;
+
+    color:#1e3a8a;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    outline:none;
+
+    transition:.3s;
+
+    direction:rtl;
+
+}
+
+
+.reserve-role-select:hover{
+
+    border-color:#2563eb;
+
+    background:#eff6ff;
+
+}
+
+
+.reserve-role-select:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:
+    0 0 0 3px rgba(37,99,235,.15);
+
+}
+
+
+/* گزینه های داخل لیست */
+
+.reserve-role-select option{
+
+    padding:10px;
+
+    font-weight:bold;
+
+}
+
+/* ظاهر انتخاب روز جایگزینی */
+
+.replacement-day-select {
+
+    width: 100%;
+
+    padding: 12px 15px;
+
+    margin: 12px 0;
+
+    border-radius: 12px;
+
+    border: 1px solid #cbd5e1;
+
+    background: #ffffff;
+
+    color: #1e293b;
+
+    font-size: 15px;
+
+    font-family: Tahoma, sans-serif;
+
+    cursor: pointer;
+
+    outline: none;
+
+    transition: all .3s ease;
+
+}
+
+
+/* وقتی روی سلکت کلیک می‌شود */
+
+.replacement-day-select:focus {
+
+    border-color: #2563eb;
+
+    box-shadow: 
+    0 0 0 3px rgba(37,99,235,.15);
+
+}
+
+
+/* گزینه‌ها */
+
+.replacement-day-select option {
+
+    padding: 10px;
+
+}.replacement-label {
+
+    display:block;
+
+    margin-top:15px;
+
+    margin-bottom:8px;
+
+    font-weight:bold;
+
+    color:#334155;
+
+    font-size:14px;
+
+}

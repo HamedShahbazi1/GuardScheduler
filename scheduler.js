@@ -10,7 +10,6 @@ let weekendDays = [];
 
 let normalDays = [];
 let score05Days = [];
-
 let score1Days = [];
 
 let score2Days = [];
@@ -180,17 +179,26 @@ function fillPersons(persons, role) {
 
             const day = findBestDay(person, role);
 
-            if (day !== null) {
+          if (day !== null) {
 
-                monthlySchedule[day - 1][role] = person;
 
-                person.assignedCount++;
+    let finalPerson = person;
 
-                addToReport(person, role, day);
 
-                added = true;
 
-            }
+    monthlySchedule[day - 1][role] = finalPerson;
+
+
+    person.assignedCount++;
+
+
+    addToReport(finalPerson, role, day);
+
+
+    added = true;
+
+
+}
 
         });
 
@@ -390,11 +398,10 @@ let monthlySchedule = [];
 let assignedHistory = {};
 let scheduleReport = {};
 
-
+window.replacements = window.replacements || [];
 /*=====================================
       ذخیره برنامه
 =====================================*/
-
 function saveSchedule() {
 
     localStorage.setItem(
@@ -402,13 +409,19 @@ function saveSchedule() {
         JSON.stringify(monthlySchedule)
     );
 
+
     localStorage.setItem(
         REPORT_KEY,
         JSON.stringify(scheduleReport)
     );
 
-}
 
+    localStorage.setItem(
+        "GuardSchedulerReplacements",
+        JSON.stringify(window.replacements)
+    );
+
+}
 
 /*=====================================
       بازیابی برنامه
@@ -437,7 +450,18 @@ function loadSchedule() {
             JSON.parse(report);
 
     }
+const savedReplacements =
+    localStorage.getItem(
+        "GuardSchedulerReplacements"
+    );
 
+
+if(savedReplacements){
+
+    window.replacements =
+        JSON.parse(savedReplacements);
+
+}
     return true;
 
 }
@@ -491,6 +515,7 @@ function generateSchedule() {
     assignGroup(groups.chief, "chief");
     assignGroup(groups.guard, "guard");
     assignGroup(groups.night, "night");
+    applyReplacements();
     console.log(monthlySchedule);
 
 
@@ -627,11 +652,11 @@ ${day.guard.originalPerson ? `
 
 <details class="replacement-details">
 
-    <summary>
+      <summary>
 
-        🔄 دارای جایگزین
+🔄 جایگزین افسر: ${day.guard.originalPerson.name}
 
-    </summary>
+</summary>
 
     <div class="replacement-content">
 
@@ -680,11 +705,11 @@ ${day.night.originalPerson ? `
 
 <details class="replacement-details">
 
-    <summary>
+     <summary>
 
-        🔄 دارای جایگزین
+🔄 جایگزین افسر: ${day.night.originalPerson.name}
 
-    </summary>
+</summary>
 
     <div class="replacement-content">
 
@@ -881,8 +906,124 @@ function renderReport() {
 
 }
 
+function getPersonScheduleDays(listName, personId){
+
+    let result = [];
 
 
+    monthlySchedule.forEach(function(day){
+
+        const assignedPerson = day[listName];
+
+
+        if(!assignedPerson){
+            return;
+        }
+
+
+        const originalId =
+            assignedPerson.originalPerson
+            ? assignedPerson.originalPerson.id
+            : assignedPerson.id;
+
+
+        if(originalId === personId){
+
+            result.push({
+
+                day: day.day,
+
+                weekDay: getWeekDayByProgramDay(day.day)
+
+            });
+
+        }
+
+
+    });
+
+
+    return result;
+
+}
+function applyReplacements(){
+
+    // اول همه جایگزین ها را پاک کن و نفر اصلی را برگردان
+    monthlySchedule.forEach(function(day){
+
+        ["chief","guard","night"].forEach(function(role){
+
+            const person = day[role];
+
+            if(person && person.originalPerson){
+
+                day[role] = person.originalPerson;
+
+            }
+
+        });
+
+    });
+
+
+    // بعد جایگزین های باقی مانده را اعمال کن
+    window.replacements.forEach(function(item){
+
+
+        const day =
+            monthlySchedule[item.day - 1];
+
+
+        if(!day){
+            return;
+        }
+
+
+        const original =
+            lists[item.role].find(p =>
+                p.id === item.originalId
+            );
+
+
+        if(!original){
+            return;
+        }
+
+
+        // بدون جایگزین
+        if(item.replacementId === 0){
+
+            day[item.role] = original;
+
+            return;
+
+        }
+
+
+
+        const replacement =
+            reservePersons.find(p =>
+                p.id === item.replacementId
+            );
+
+
+        if(replacement){
+
+            day[item.role] = {
+
+                ...replacement,
+
+                originalPerson: original
+
+            };
+
+        }
+
+
+    });
+
+
+}
 function createReportSection(title, role) {
 
 
