@@ -2178,7 +2178,25 @@ border-right:5px solid #f59e0b;
 
 }
 
+.holiday-title{
 
+    margin-top:8px;
+
+    color:#d32f2f;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+}.report-holiday{
+
+    color:#c62828;
+
+    font-weight:bold;
+
+    font-size:13px;
+
+}
 #modalConfirmBtn:hover{
 
     transform:translateY(-2px);
@@ -2552,4 +2570,279 @@ border-right:5px solid #f59e0b;
 
     font-size:14px;
 
+}
+#pdfContainer{
+
+    display:none;
+
+    direction:rtl;
+
+    background:#fff;
+
+    color:#000;
+
+    width:794px;
+
+    padding:30px;
+
+    font-family:"Vazir",Tahoma,sans-serif;
+
+}
+/* ==========================
+          PDF
+========================== */
+
+#pdfExportContainer{
+
+    width:794px;
+
+    background:#ffffff;
+
+    padding:25px;
+
+    direction:rtl;
+
+    font-family:tahoma;
+
+    color:#222;
+
+}
+
+#pdfContent{
+
+    direction:rtl;
+
+}
+
+.pdf-header{
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+}
+
+.pdf-header h1{
+
+    margin:0;
+
+    font-size:24px;
+
+}
+
+.pdf-header p{
+
+    margin-top:8px;
+
+    font-size:14px;
+
+    color:#666;
+
+}
+
+.pdf-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    table-layout:fixed;
+
+}
+
+.pdf-table th{
+
+    background:#1f4e79;
+
+    color:#ffffff;
+
+    border:1px solid #999;
+
+    padding:10px;
+
+    font-size:14px;
+
+}
+
+.pdf-table td{
+
+    border:1px solid #999;
+
+    padding:8px;
+
+    text-align:center;
+
+    font-size:13px;
+
+    word-break:break-word;
+
+}
+
+.pdf-table tr:nth-child(even){
+
+    background:#f7f9fc;
+
+}
+
+.pdf-table{
+
+    page-break-inside: auto;
+
+}
+
+.pdf-table tr{
+
+    page-break-inside: avoid;
+
+    break-inside: avoid;
+
+}
+
+.pdf-table td{
+
+    page-break-inside: avoid;
+
+    break-inside: avoid;
+
+}
+/*=========================
+      Fairness PDF
+=========================*/
+
+#pdfFairnessContainer{
+
+    width:794px;
+
+    background:#fff;
+
+    padding:20px;
+
+    direction:rtl;
+
+    font-family:tahoma;
+
+    color:#222;
+
+}
+
+#pdfFairnessContent{
+
+    direction:rtl;
+
+}
+
+#pdfFairnessContent .guard-report-section{
+
+    margin-bottom:18px;
+
+}
+
+#pdfFairnessContent .section-header{
+
+    background:#1f4e79;
+
+    color:#fff;
+
+    text-align:center;
+
+    padding:8px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    border-radius:4px 4px 0 0;
+
+}
+
+#pdfFairnessContent table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    table-layout:fixed;
+
+    page-break-inside:auto;
+
+}
+
+#pdfFairnessContent thead{
+
+    display:table-header-group;
+
+}
+
+#pdfFairnessContent tr{
+
+    page-break-inside:avoid;
+
+    break-inside:avoid;
+
+}
+
+#pdfFairnessContent th{
+
+    background:#e9eef5;
+
+    border:1px solid #999;
+
+    padding:5px;
+
+    font-size:11px;
+
+    font-weight:bold;
+
+    text-align:center;
+
+}
+
+#pdfFairnessContent td{
+
+    border:1px solid #bbb;
+
+    padding:4px;
+
+    font-size:10px;
+
+    text-align:center;
+
+    white-space:nowrap;
+
+}
+
+#pdfFairnessContent tbody tr:nth-child(even){
+
+    background:#f8f9fb;
+
+}
+
+#pdfFairnessContent h1{
+
+    text-align:center;
+
+    font-size:22px;
+
+    margin-bottom:4px;
+
+}
+
+#pdfFairnessContent p{
+
+    text-align:center;
+
+    color:#666;
+
+    font-size:12px;
+
+    margin-bottom:18px;
+
+}
+#pdfFairnessContent .guard-report-day{
+background-color: transparent;
+color: black;
+border-radius: 0px;
+border: none;
+display: flex;
+gap: 4px;
 }

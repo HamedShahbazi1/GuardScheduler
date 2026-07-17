@@ -1361,8 +1361,32 @@ function showCurrentDate() {
 
     const now = new Date();
 
-    window.currentProgramDate = new Date(now);
 
+    const savedDate = localStorage.getItem(
+        "GuardScheduler_StartDate"
+    );
+
+
+    if(savedDate){
+
+        window.currentProgramDate = new Date(savedDate);
+
+    }
+    else{
+
+        window.currentProgramDate = now;
+
+
+        localStorage.setItem(
+            "GuardScheduler_StartDate",
+            window.currentProgramDate.toISOString()
+        );
+
+    }
+localStorage.setItem(
+    "GuardScheduler_StartDate",
+    window.currentProgramDate.toISOString()
+);
     const dateFormatter = new Intl.DateTimeFormat(
         "fa-IR",
         {
@@ -1414,20 +1438,32 @@ function getWeekDayByProgramDay(day) {
 }
 function getShamsiDateByProgramDay(day) {
 
+
+    if (!window.currentProgramDate) {
+
+        return "---";
+
+    }
+
+
     const date = new Date(window.currentProgramDate);
+
 
     date.setDate(
         date.getDate() + (day - 1)
     );
 
+
     return new Intl.DateTimeFormat(
         "fa-IR",
         {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit"
+            year:"numeric",
+            month:"2-digit",
+            day:"2-digit"
         }
+
     ).format(date);
+
 
 }
 /*=====================================

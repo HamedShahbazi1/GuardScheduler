@@ -223,7 +223,7 @@
                 ایجاد برنامه
             </button>
 
-            <button id="pdfBtn" type="button">
+            <button id="pdfBtn" type="button" onclick="downloadPDF()">
                 دانلود PDF
             </button>
 
@@ -322,13 +322,20 @@
 
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-    <script src="app.js"></script>
-    <script src="calender.js"></script>
-    <script src="scheduler.js"></script>
-    <script src="pdf.js"></script>
-    <script src="backup.js"></script>
+    <div id="pdfContainer" ></div>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script src="app.js"></script>
+
+<script src="calender.js"></script>
+
+<script src="holidays-1405.js"></script>
+
+<script src="scheduler.js"></script>
+
+<script src="pdf.js"></script>
+<script src="backup.js"></script>
 
 
 </body>
