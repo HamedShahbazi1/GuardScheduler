@@ -35,185 +35,303 @@
         <!-- جدول افراد -->
         <!-- راهنمای ضریب -->
 
-        <section class="card">
+        <section class="card person-card">
 
-            <h2>افسر جانشین </h2>
-            <div class="person-tools">
+            <div class="person-list-header" data-target="chiefListContent">
 
-                <input type="text" id="newPersonName" placeholder="نام افسر جانشین">
+                <h2>
+                    افسر جانشین
+                </h2>
 
-                <button id="addPersonBtn" type="button">
+                <div class="toggle-list-btn">
 
-                    افزودن افسر جانشین
+                    <span class="toggle-text">
+                        نمایش لیست اسامی
+                    </span>
 
-                </button>
+                    <span class="toggle-icon">
+                        🔽
+                    </span>
+
+                </div>
 
             </div>
 
-            <div class="table-responsive">
 
-                <table class="score-table">
+            <div id="chiefListContent" class="person-list-content">
 
-                    <thead>
+                <div class="person-tools">
 
-                        <tr>
-
-                            <th>ردیف</th>
-
-                            <th>نام و نام خانوادگی</th>
-
-                            <th>امتیاز</th>
+                    <input type="text" id="newPersonName" placeholder="نام افسر جانشین">
 
 
+                    <button id="addPersonBtn" type="button">
 
-                            <th>جایگزین</th>
+                        افزودن افسر جانشین
 
-                            <th>عملیات</th>
+                    </button>
 
-                        </tr>
+                </div>
 
-                    </thead>
 
-                    <tbody id="chiefTable">
+                <div class="table-responsive">
 
-                    </tbody>
+                    <table class="score-table">
 
-                </table>
+                        <thead>
+
+                            <tr>
+
+                                <th>ردیف</th>
+
+                                <th>نام و نام خانوادگی</th>
+
+                                <th>امتیاز</th>
+
+                                <th>جایگزین</th>
+
+                                <th>عملیات</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="chiefTable"></tbody>
+
+                    </table>
+
+                </div>
+
             </div>
+
         </section>
-        <section class="card">
 
-            <h2>افسر سر</h2>
+        <section class="card person-card">
 
-            <div class="person-tools">
+            <div class="person-list-header" data-target="guardListContent">
 
-                <input type="text" id="newGuardName" placeholder="نام افسر سر">
+                <h2>
+                    افسر سر
+                </h2>
 
-                <button id="addGuardBtn" type="button">
+                <div class="toggle-list-btn">
 
-                    افزودن افسر سر
+                    <span class="toggle-text">
+                        نمایش لیست اسامی
+                    </span>
 
-                </button>
+                    <span class="toggle-icon">
+                        🔽
+                    </span>
+
+                </div>
 
             </div>
-            <div class="table-responsive">
-                <table class="score-table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>ردیف</th>
-
-                            <th>نام و نام خانوادگی</th>
-
-                            <th>امتیاز</th>
 
 
-                            <th>جایگزین</th>
+            <div id="guardListContent" class="person-list-content">
 
-                            <th>عملیات</th>
+                <div class="person-tools">
 
-                        </tr>
+                    <input type="text" id="newGuardName" placeholder="نام افسر سر">
 
-                    </thead>
 
-                    <tbody id="guardTable">
+                    <button id="addGuardBtn" type="button">
 
-                    </tbody>
+                        افزودن افسر سر
 
-                </table>
+                    </button>
+
+                </div>
+
+
+                <div class="table-responsive">
+
+                    <table class="score-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>ردیف</th>
+
+                                <th>نام و نام خانوادگی</th>
+
+                                <th>امتیاز</th>
+
+                                <th>جایگزین</th>
+
+                                <th>عملیات</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="guardTable"></tbody>
+
+                    </table>
+
+                </div>
+
             </div>
+
         </section>
-        <section class="card">
 
-            <h2> افسر پاسدار</h2>
+        <section class="card person-card">
 
-            <div class="person-tools">
+            <div class="person-list-header" data-target="nightListContent">
 
-                <input type="text" id="newNightName" placeholder="نام   افسر پاسدار">
+                <h2>
+                    افسر پاسدار
+                </h2>
 
-                <button id="addNightBtn" type="button">
+                <div class="toggle-list-btn">
 
-                    افزودن افسر پاسدار
+                    <span class="toggle-text">
+                        نمایش لیست اسامی
+                    </span>
 
-                </button>
+                    <span class="toggle-icon">
+                        🔽
+                    </span>
+
+                </div>
 
             </div>
-            <div class="table-responsive">
-                <table class="score-table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>ردیف</th>
-
-                            <th>نام و نام خانوادگی</th>
-
-                            <th>امتیاز</th>
 
 
+            <div id="nightListContent" class="person-list-content">
 
-                            <th>جایگزین</th>
+                <div class="person-tools">
 
-                            <th>عملیات</th>
+                    <input type="text" id="newNightName" placeholder="نام افسر پاسدار">
 
-                        </tr>
 
-                    </thead>
+                    <button id="addNightBtn" type="button">
 
-                    <tbody id="nightTable">
+                        افزودن افسر پاسدار
 
-                    </tbody>
+                    </button>
 
-                </table>
+                </div>
+
+
+                <div class="table-responsive">
+
+                    <table class="score-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>ردیف</th>
+
+                                <th>نام و نام خانوادگی</th>
+
+                                <th>امتیاز</th>
+
+                                <th>جایگزین</th>
+
+                                <th>عملیات</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="nightTable"></tbody>
+
+                    </table>
+
+                </div>
+
             </div>
+
         </section>
-        <section class="card">
 
-            <h2>لیست نیروهای جایگزین</h2>
+        <section class="card person-card">
 
-            <div class="person-tools">
+            <div class="person-list-header" data-target="reserveListContent">
 
-                <input type="text" id="newReserveName" placeholder="نام نیروی جایگزین">
-               <select id="newReserveRole" class="reserve-role-select">
-                    <option value="chief">افسر جانشین</option>
-                    <option value="guard">افسر سر</option>
-                    <option value="night">افسر پاسدار</option>
-                </select>
-                <button id="addReserveBtn" type="button">
+                <h2>
+                    لیست نیروهای جایگزین
+                </h2>
 
-                    افزودن نیروی جایگزین
+                <div class="toggle-list-btn">
 
-                </button>
+                    <span class="toggle-text">
+                        نمایش لیست اسامی
+                    </span>
+
+                    <span class="toggle-icon">
+                        🔽
+                    </span>
+
+                </div>
 
             </div>
-            <div class="table-responsive">
-                <table class="score-table">
 
-                    <thead>
 
-                        <tr>
+            <div id="reserveListContent" class="person-list-content">
 
-                            <th>ردیف</th>
+                <div class="person-tools">
 
-                            <th>نام</th>
+                    <input type="text" id="newReserveName" placeholder="نام نیروی جایگزین">
 
-                            <th>سمت</th>
 
-                            <th>عملیات</th>
+                    <select id="newReserveRole" class="reserve-role-select">
 
-                        </tr>
+                        <option value="chief">
+                            افسر جانشین
+                        </option>
 
-                    </thead>
+                        <option value="guard">
+                            افسر سر
+                        </option>
 
-                    <tbody id="reserveTable">
+                        <option value="night">
+                            افسر پاسدار
+                        </option>
 
-                    </tbody>
+                    </select>
 
-                </table>
+
+                    <button id="addReserveBtn" type="button">
+
+                        افزودن نیروی جایگزین
+
+                    </button>
+
+                </div>
+
+
+                <div class="table-responsive">
+
+                    <table class="score-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>ردیف</th>
+
+                                <th>نام</th>
+
+                                <th>سمت</th>
+
+                                <th>عملیات</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="reserveTable"></tbody>
+
+                    </table>
+
+                </div>
+
             </div>
+
         </section>
         <!-- دکمه ها -->
 
@@ -323,19 +441,19 @@
         </div>
     </div>
 
-    <div id="pdfContainer" ></div>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <div id="pdfContainer"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-<script src="app.js"></script>
+    <script src="app.js"></script>
 
-<script src="calender.js"></script>
+    <script src="calender.js"></script>
 
-<script src="holidays-1405.js"></script>
+    <script src="holidays-1405.js"></script>
 
-<script src="scheduler.js"></script>
+    <script src="scheduler.js"></script>
 
-<script src="pdf.js"></script>
-<script src="backup.js"></script>
+    <script src="pdf.js"></script>
+    <script src="backup.js"></script>
 
 
 </body>

@@ -1736,6 +1736,40 @@ function updateScheduleReplacement() {
     });
 
 }
+
+/*=====================================
+      باز و بسته کردن لیست اسامی
+=====================================*/
+
+document
+    .querySelectorAll(".person-list-header")
+    .forEach(function (header) {
+
+        header.addEventListener(
+            "click",
+            function () {
+
+                const targetId =
+                    header.dataset.target;
+
+                const content =
+                    document.getElementById(targetId);
+
+                if (!content) {
+
+                    return;
+
+                }
+
+                content.classList.toggle("open");
+
+                header.classList.toggle("opened");
+
+            }
+
+        );
+
+    });
 loadList("chief");
 
 loadList("guard");

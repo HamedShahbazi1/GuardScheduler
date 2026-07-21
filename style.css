@@ -2195,6 +2195,7 @@ border-right:5px solid #f59e0b;
     font-weight:bold;
 
     font-size:13px;
+    padding: 5px 0;
 
 }
 #modalConfirmBtn:hover{
@@ -2845,4 +2846,125 @@ border-radius: 0px;
 border: none;
 display: flex;
 gap: 4px;
+}
+
+/*=====================================
+    لیست‌های باز و بسته‌شونده
+=====================================*/
+.person-card {
+    overflow: hidden;
+}
+
+
+.person-card-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    cursor: pointer;
+
+    padding: 8px 0;
+
+}
+
+.person-list-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    cursor: pointer;
+
+    padding: 10px 14px;
+
+    border-radius: 10px;
+
+    transition: background 0.2s ease;
+
+}
+
+
+.person-list-header:hover {
+
+    background: #f1f5f9;
+
+}
+
+
+.person-card-header h2 {
+
+    margin: 0;
+
+}
+.toggle-list-btn {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #2563eb;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+}
+
+
+.toggle-icon {
+
+    font-size: 20px;
+
+    transition: transform 0.3s ease;
+
+}
+
+
+.toggle-list-btn.rotated
+.toggle-icon {
+
+    transform: rotate(180deg);
+
+}
+.person-list-content {
+
+    max-height: 0;
+
+    overflow: hidden;
+
+    opacity: 0;
+
+    transition:
+
+        max-height 0.45s ease,
+
+        opacity 0.3s ease;
+
+}
+.person-list-content.open {
+
+    max-height: 5000px;
+
+    opacity: 1;
+
+}
+.person-list-content.collapsed {
+
+    max-height: 0;
+
+    opacity: 0;
+
+}
+
+.toggle-list-btn.rotated {
+
+    transform: rotate(180deg);
+
 }

@@ -453,13 +453,22 @@ function addToReport(person, role, day) {
 
     }
 
+
     const id = person.originalPerson
         ? person.originalPerson.id
         : person.id;
 
+
     const name = person.originalPerson
         ? person.originalPerson.name
         : person.name;
+
+
+    const score = person.originalPerson
+        ? person.originalPerson.score
+        : person.score;
+
+
 
     if (!scheduleReport[id]) {
 
@@ -469,6 +478,8 @@ function addToReport(person, role, day) {
 
             role: role,
 
+            score: score,
+
             count: 0,
 
             days: []
@@ -477,7 +488,9 @@ function addToReport(person, role, day) {
 
     }
 
+
     scheduleReport[id].count++;
+
 
     scheduleReport[id].days.push(day);
 
@@ -1190,7 +1203,7 @@ function createReportSection(title, role) {
 <tr>
 
 <th>نام</th>
-
+  <th>امتیاز</th>
 <th>تعداد پاس</th>
 
 <th>روزهای پاس</th>
@@ -1236,7 +1249,15 @@ function createReportSection(title, role) {
 ${item.name}
 
 </td>
+<td>
 
+<span class="guard-report-score">
+
+${item.score}
+
+</span>
+
+</td>
 
 
 <td>
