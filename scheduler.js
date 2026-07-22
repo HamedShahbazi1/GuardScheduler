@@ -1176,17 +1176,35 @@ function createReportSection(title, role) {
     section.className = "guard-report-section";
 
 
-    const header = document.createElement("div");
+  const header = document.createElement("div");
 
-    header.className = "guard-report-header";
+header.className = "guard-report-header";
 
-    header.innerHTML = title;
+header.innerHTML = `
+
+    <h3>
+        ${title}
+    </h3>
+
+    <div class="report-toggle-btn">
+
+        <span class="report-toggle-text">
+            نمایش گزارش
+        </span>
+
+        <span class="report-toggle-icon">
+            🔽
+        </span>
+
+    </div>
+
+`;
 
 
 
-    const card = document.createElement("div");
+const card = document.createElement("div");
 
-    card.className = "guard-report-card";
+card.className = "guard-report-card report-content";
 
 
 
@@ -1251,22 +1269,30 @@ ${item.name}
 </td>
 <td>
 
-<span class="guard-report-score">
+    <span class="report-mobile-label">
+        امتیاز:
+    </span>
 
-${item.score}
+    <span class="guard-report-score">
 
-</span>
+        ${item.score}
+
+    </span>
 
 </td>
 
 
 <td>
 
-<span class="guard-report-count">
+    <span class="report-mobile-label">
+        تعداد پاس:
+    </span>
 
-${item.count}
+    <span class="guard-report-count">
 
-</span>
+        ${item.count}
+
+    </span>
 
 </td>
 
@@ -1383,6 +1409,49 @@ ${item.days.map(function (day) {
 
     fairnessContainer.appendChild(section);
 
+header.addEventListener(
+    "click",
+    function () {
 
+        const isOpen =
+            card.classList.contains("open");
+
+        if (isOpen) {
+
+            card.classList.remove("open");
+
+            header.classList.remove("open");
+
+            header.querySelector(
+                ".report-toggle-text"
+            ).textContent =
+                "نمایش گزارش";
+
+            header.querySelector(
+                ".report-toggle-icon"
+            ).textContent =
+                "🔽";
+
+        }
+        else {
+
+            card.classList.add("open");
+
+            header.classList.add("open");
+
+            header.querySelector(
+                ".report-toggle-text"
+            ).textContent =
+                "بستن گزارش";
+
+            header.querySelector(
+                ".report-toggle-icon"
+            ).textContent =
+                "🔼";
+
+        }
+
+    }
+);
 
 }
